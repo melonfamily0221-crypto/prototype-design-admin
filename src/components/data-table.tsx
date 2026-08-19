@@ -30,6 +30,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
   rowSelection?: any
   onRowSelectionChange?: any
+  onRowClick?: (row: any) => void
 }
 
 export function DataTable<TData, TValue>({
@@ -37,6 +38,7 @@ export function DataTable<TData, TValue>({
   data = [],
   rowSelection,
   onRowSelectionChange,
+  onRowClick,
 }: DataTableProps<TData, TValue>) {
   const [internalRowSelection, setInternalRowSelection] = React.useState({})
   const actualRowSelection = rowSelection !== undefined ? rowSelection : internalRowSelection
@@ -97,6 +99,8 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  onClick={() => onRowClick?.(row)}
+                  className={onRowClick ? "cursor-pointer hover:bg-muted/50" : ""}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
